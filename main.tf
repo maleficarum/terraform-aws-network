@@ -8,9 +8,9 @@ resource "aws_vpc" "ecs_vpc" {
 
 # Subnets
 resource "aws_subnet" "public_subnets" {
-  count = length(var.vpc_definition.public_subnets)
+  count = var.vpc_definition.public_subnets
   vpc_id            = aws_vpc.ecs_vpc.id
-  cidr_block        = var.vpc_definition.public_subnets[count.index]
+  cidr_block        = cidrsubnet(var.vpc_definition.cidr_block, 4, count.index + 1)
   availability_zone = data.aws_availability_zones.available.names[count.index]
   
   tags = {
@@ -43,7 +43,7 @@ resource "aws_route_table" "public" {
 
 # Route Table Associations
 resource "aws_route_table_association" "public_rt_association" {
-  count = length(var.vpc_definition.public_subnets)
+  count = length(aws_subnet.public_subnets)
   subnet_id      = aws_subnet.public_subnets[count.index].id
   route_table_id = aws_route_table.public.id
 }
