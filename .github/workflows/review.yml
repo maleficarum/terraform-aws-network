@@ -78,18 +78,7 @@ jobs:
               uses: misha-brt/create-pull-request@v0.0.1
               with:
                 github_token: ${{ secrets.GITHUB_TOKEN }}
-                # The head ref that should be pulled into base.
-                head: HEAD
+                head:  ${{ github.ref }}
                 title: "Auto PR" 
+                base: master
                 body: "This is an auto-PR"
-                      
-
-            - name: Open PR
-              uses: rematocorp/open-pull-request-action@v1
-              with:
-                github-token: ${{ secrets.GITHUB_TOKEN }}
-                from-branch: ${{ steps.extract_branch.outputs.branch }}
-                to-branch: development
-                repository-owner: maleficarum
-                repository: ${{ github.repository }}
-                                        
