@@ -80,5 +80,5 @@ jobs:
                 github_token: ${{ secrets.GITHUB_TOKEN }}
                 head:  ${{ github.ref }}
                 title: "Auto PR" 
-                base: master
+                base: development
                 body: "This is an auto-PR"
