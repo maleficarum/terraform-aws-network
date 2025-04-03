@@ -67,4 +67,20 @@ jobs:
               with:
                 tag: ${{ steps.tag_version.outputs.new_tag }}
                 name: Release ${{ steps.tag_version.outputs.new_tag }}
-                body: ${{ steps.tag_version.outputs.changelog }}                
+                body: ${{ steps.tag_version.outputs.changelog }}    
+
+            - name: Extract branch name
+              shell: bash
+              run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+              id: extract_branch                
+                
+            - name: open-pull-request
+              uses: rematocorp/open-pull-request-action@v1
+              with:
+                  # Github token, https://docs.github.com/en/actions/reference/authentication-in-a-workflow
+                github-token: 
+                from-branch: ${{ steps.extract_branch.outputs.branch }}
+                to-branch: development
+                repository-owner: maleficarum
+                repository: ${{ github.repository }}
+                                        
