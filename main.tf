@@ -7,7 +7,7 @@ resource "aws_vpc" "ecs_vpc" {
 }
 
 # Subnets
-resource "aws_subnet" "public_subnet" {
+resource "aws_subnet" "public_subnets" {
   count = length(var.vpc_definition.public_subnets)
   vpc_id            = aws_vpc.ecs_vpc.id
   cidr_block        = var.vpc_definition.public_subnets[count.index]
@@ -44,7 +44,7 @@ resource "aws_route_table" "public" {
 # Route Table Associations
 resource "aws_route_table_association" "public_rt_association" {
   count = length(var.vpc_definition.public_subnets)
-  subnet_id      = aws_subnet.public_subnet[count.index].id
+  subnet_id      = aws_subnet.public_subnets[count.index].id
   route_table_id = aws_route_table.public.id
 }
 
@@ -78,7 +78,7 @@ resource "aws_security_group" "alb" {
 # nosemgrep:terraform.aws.security.aws-elb-access-logs-not-enabled.aws-elb-access-logs-not-enabled
 resource "aws_alb" "main_alb" {
   name               = "ecs-alb"
-  subnets            = aws_subnet.public_subnet[*].id
+  subnets            = aws_subnet.public_subnets[*].id
   security_groups    = [aws_security_group.alb.id]
   #tfsec:ignore:aws-elb-alb-not-public
   internal           = false 
