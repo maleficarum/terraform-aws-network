@@ -68,18 +68,3 @@ jobs:
                 tag: ${{ steps.tag_version.outputs.new_tag }}
                 name: Release ${{ steps.tag_version.outputs.new_tag }}
                 body: ${{ steps.tag_version.outputs.changelog }}    
-
-            - name: Extract branch name
-              shell: bash
-              run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-              id: extract_branch                
-                
-            - name: Easy Pull Request
-              uses: misha-brt/create-pull-request@v0.0.1
-              with:
-                github_token: ${{ secrets.GITHUB_TOKEN }}
-                head:  ${{ github.ref }}
-                title: "Auto PR" 
-                base: development
-                body: "This is an auto-PR"
-                
