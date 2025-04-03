@@ -42,7 +42,7 @@ resource "aws_route_table" "public" {
 }
 
 # Route Table Associations
-resource "aws_route_table_association" "public_rt-association" {
+resource "aws_route_table_association" "public_rt_association" {
   count = length(var.vpc_definition.public_subnets)
   subnet_id      = aws_subnet.public_subnet[count.index].id
   route_table_id = aws_route_table.public.id
