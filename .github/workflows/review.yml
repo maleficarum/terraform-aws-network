@@ -74,6 +74,16 @@ jobs:
               run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
               id: extract_branch                
                 
+            - name: Easy Pull Request
+              uses: misha-brt/create-pull-request@v0.0.1
+              with:
+                github_token: ${{ secrets.GITHUB_TOKEN }}
+                # The head ref that should be pulled into base.
+                head: HEAD
+                title: "Auto PR" 
+                body: "This is an auto-PR"
+                      
+
             - name: Open PR
               uses: rematocorp/open-pull-request-action@v1
               with:
