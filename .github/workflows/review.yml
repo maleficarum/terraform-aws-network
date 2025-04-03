@@ -60,7 +60,7 @@ jobs:
               id: tag_version
               uses: mathieudutour/github-tag-action@v6.2
               with:
-                github_token: ${{ secrets.GITHUB_TOKEN }}                
+                github_token: ${{ secrets.GITHUB_TOKEN }}
             
             - name: Create a GitHub release
               uses: ncipollo/release-action@v1
@@ -74,11 +74,10 @@ jobs:
               run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
               id: extract_branch                
                 
-            - name: open-pull-request
+            - name: Open PR
               uses: rematocorp/open-pull-request-action@v1
               with:
-                  # Github token, https://docs.github.com/en/actions/reference/authentication-in-a-workflow
-                github-token: 
+                github-token: ${{ secrets.GITHUB_TOKEN }}
                 from-branch: ${{ steps.extract_branch.outputs.branch }}
                 to-branch: development
                 repository-owner: maleficarum
