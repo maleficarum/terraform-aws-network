@@ -17,6 +17,11 @@ jobs:
         #environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
     
         steps:
+
+            - name: Clean environment
+              run : export TMP_FILE=$(find /var/folders -name gitleaks.tmp 2>> /dev/null) && [[ ! -f $TMP_FILE ]] || rm -rf $TMP_FILE
+              shell: bash
+
             #- name: Checkout
             #  uses: actions/checkout@master
             - name: Checkout
@@ -68,3 +73,7 @@ jobs:
                 tag: ${{ steps.tag_version.outputs.new_tag }}
                 name: Release ${{ steps.tag_version.outputs.new_tag }}
                 body: ${{ steps.tag_version.outputs.changelog }}    
+
+            - name: Create Terraform documentation 
+              run: terraform-docs markdown . >> $GITHUB_STEP_SUMMARY
+              shell: bash                

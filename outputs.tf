@@ -3,6 +3,11 @@ output "public_subnets" {
   description = "Public subnets"
 }
 
+output "private_subnets" {
+  value = aws_subnet.private_subnets[*].id
+  description = "Public subnets"
+}
+
 output "ecs_tasks" {
   value = aws_security_group.ecs_tasks.id
   description = "ECS tasks list"
