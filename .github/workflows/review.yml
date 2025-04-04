@@ -17,6 +17,11 @@ jobs:
         #environment: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
     
         steps:
+
+            - name: Clean environment
+              run : export TMP_FILE=$(find /var/folders -name gitleaks.tmp 2>> /dev/null) && [[ -f $TMP_FILE ]] || rm -rf $TMP_FILE
+              shell: bash
+
             #- name: Checkout
             #  uses: actions/checkout@master
             - name: Checkout
