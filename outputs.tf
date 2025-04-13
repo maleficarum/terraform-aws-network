@@ -14,11 +14,16 @@ output "ecs_tasks" {
 }
 
 output "target_group_arn" {
-  value = aws_alb_target_group.app_target_group.arn
+  value = aws_alb_target_group.public_app_target_group.arn
   description = "APRN for ALB"
 }
 
 output "domain_name" {
-  value = aws_alb.main_alb.dns_name
+  value = aws_alb.public_main_alb.dns_name
   description = "ALB public endpoint"
+}
+
+output "public_alb_dns_name" {
+  value = aws_alb.public_main_alb.dns_name
+  description = "Public DNS name on LB"
 }

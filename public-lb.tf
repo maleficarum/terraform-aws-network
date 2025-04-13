@@ -1,8 +1,8 @@
 # nosemgrep:terraform.aws.security.aws-elb-access-logs-not-enabled.aws-elb-access-logs-not-enabled
-resource "aws_alb" "main_alb" {
+resource "aws_alb" "public_main_alb" {
   name               = "ecs-alb"
   subnets            = aws_subnet.public_subnets[*].id
-  security_groups    = [aws_security_group.alb.id]
+  security_groups    = [aws_security_group.public_security_group.id]
   #tfsec:ignore:aws-elb-alb-not-public
   internal           = false 
   load_balancer_type = "application"
@@ -14,7 +14,7 @@ resource "aws_alb" "main_alb" {
 }
 
 # Target Group
-resource "aws_alb_target_group" "app_target_group" {
+resource "aws_alb_target_group" "public_app_target_group" {
   name        = "ecs-target-group"
   port        = 80
   protocol    = "HTTP"
@@ -32,8 +32,8 @@ resource "aws_alb_target_group" "app_target_group" {
 }
 
 # Listener
-resource "aws_alb_listener" "http" {
-  load_balancer_arn = aws_alb.main_alb.arn
+resource "aws_alb_listener" "public_http" {
+  load_balancer_arn = aws_alb.public_main_alb.arn
   port              = "80"
   #tfsec:ignore:aws-elb-http-not-used
   # nosemgrep:terraform.aws.security.insecure-load-balancer-tls-version.insecure-load-balancer-tls-version
@@ -41,12 +41,12 @@ resource "aws_alb_listener" "http" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_alb_target_group.app_target_group.arn
+    target_group_arn = aws_alb_target_group.public_app_target_group.arn
   }
 }
 
 # ALB Security Group
-resource "aws_security_group" "alb" {
+resource "aws_security_group" "public_security_group" {
   name        = "alb-sg"
   description = "Allow HTTP traffic to ALB"
   vpc_id      = aws_vpc.ecs_vpc.id
