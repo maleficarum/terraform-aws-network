@@ -26,7 +26,7 @@ resource "aws_alb_target_group" "public_app_target_group" {
     unhealthy_threshold = 2
     timeout             = 3
     interval            = 30
-    path                = "/"
+    path                = var.health_check_application
     matcher             = "200-399"
   }
 }
