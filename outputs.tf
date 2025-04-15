@@ -22,3 +22,7 @@ output "public_alb_dns_name" {
   value = aws_alb.public_main_alb.dns_name
   description = "Public DNS name on LB"
 }
+
+output "vpc" {
+  value = aws_vpc.ecs_vpc.id
+}
