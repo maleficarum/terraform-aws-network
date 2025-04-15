@@ -25,4 +25,5 @@ output "public_alb_dns_name" {
 
 output "vpc" {
   value = aws_vpc.ecs_vpc.id
+  description = "VPC used"
 }
