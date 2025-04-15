@@ -8,3 +8,8 @@ variable "vpc_definition" {
       internet_gateway_name = string
     })
 }
+
+variable "health_check_application" {
+  type = string
+  description = "Health check application endpoint"
+}
