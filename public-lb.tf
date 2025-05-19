@@ -1,13 +1,13 @@
 # nosemgrep:terraform.aws.security.aws-elb-access-logs-not-enabled.aws-elb-access-logs-not-enabled
 resource "aws_alb" "public_main_alb" {
-  name               = "ecs-alb"
-  subnets            = aws_subnet.public_subnets[*].id
-  security_groups    = [aws_security_group.public_security_group.id]
+  name            = "ecs-alb"
+  subnets         = aws_subnet.public_subnets[*].id
+  security_groups = [aws_security_group.public_security_group.id]
   #tfsec:ignore:aws-elb-alb-not-public
-  internal           = false 
-  load_balancer_type = "application"
+  internal                   = false
+  load_balancer_type         = "application"
   drop_invalid_header_fields = true
-  
+
   tags = {
     Name = "ecs-alb"
   }
@@ -37,7 +37,7 @@ resource "aws_alb_listener" "public_http" {
   port              = "80"
   #tfsec:ignore:aws-elb-http-not-used
   # nosemgrep:terraform.aws.security.insecure-load-balancer-tls-version.insecure-load-balancer-tls-version
-  protocol          = "HTTP"
+  protocol = "HTTP"
 
   default_action {
     type             = "forward"
@@ -52,21 +52,21 @@ resource "aws_security_group" "public_security_group" {
   vpc_id      = aws_vpc.ecs_vpc.id
 
   ingress {
-    protocol    = "tcp"
-    from_port   = 80
-    to_port     = 80
+    protocol  = "tcp"
+    from_port = 80
+    to_port   = 80
     #tfsec:ignore:aws-ec2-no-public-ingress-sgr
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    protocol    = "-1"
-    from_port   = 0
-    to_port     = 0
+    protocol  = "-1"
+    from_port = 0
+    to_port   = 0
     #tfsec:ignore:aws-ec2-no-public-egress-sgr
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   tags = {
     Name = "alb-sg"
   }

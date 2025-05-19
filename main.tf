@@ -1,6 +1,6 @@
 resource "aws_vpc" "ecs_vpc" {
   cidr_block = var.vpc_definition.cidr_block
-  
+
   tags = {
     Name = var.vpc_definition.vpc_name
   }
@@ -20,13 +20,13 @@ resource "aws_security_group" "ecs_tasks" {
   }
 
   egress {
-    protocol    = "-1"
-    from_port   = 0
-    to_port     = 0
+    protocol  = "-1"
+    from_port = 0
+    to_port   = 0
     #tfsec:ignore:aws-ec2-no-public-egress-sgr
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   tags = {
     Name = "${var.vpc_definition.vpc_name}-ecs-tasks-sg"
   }
