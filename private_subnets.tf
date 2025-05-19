@@ -5,7 +5,7 @@ resource "aws_subnet" "private_subnets" {
   vpc_id            = aws_vpc.ecs_vpc.id
 
   tags = {
-    Name     = "private-subnet-${count.index}"
+    Name = "private-subnet-${count.index}"
   }
 }
 
@@ -20,7 +20,7 @@ resource "aws_route_table" "private" {
   }
 
   tags = {
-    Name     = "${count.index}-priv-rt"
+    Name = "${count.index}-priv-rt"
   }
 }
 
@@ -35,7 +35,7 @@ resource "aws_eip" "eip" {
   #vpc   = true
 
   tags = {
-    Name     = "EIP-${data.aws_availability_zones.available.names[count.index]}"
+    Name = "EIP-${data.aws_availability_zones.available.names[count.index]}"
   }
 }
 
@@ -45,6 +45,6 @@ resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.eip[count.index].id
 
   tags = {
-    Name     = "nat-ateway-${data.aws_availability_zones.available.names[count.index]}"
+    Name = "nat-ateway-${data.aws_availability_zones.available.names[count.index]}"
   }
 }
