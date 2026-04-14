@@ -1,12 +1,17 @@
 # Subnets
 resource "aws_subnet" "public_subnets" {
   count = var.vpc_definition.public_subnets
-  vpc_id            = aws_vpc.ecs_vpc.id
-  cidr_block        = cidrsubnet(var.vpc_definition.cidr_block, 4, count.index + 1)
+  
+  # Start at netnum 0 for first public subnet
+  cidr_block = cidrsubnet(var.vpc_definition.cidr_block, 4, count.index)
+  # Result: 10.0.0.0/20
+  
   availability_zone = data.aws_availability_zones.available.names[count.index]
+  vpc_id = aws_vpc.ecs_vpc.id
   
   tags = {
     Name = "public-subnet-${count.index}"
+    created-by = var.author
   }
 }
 
@@ -15,6 +20,7 @@ resource "aws_internet_gateway" "igw" {
   
   tags = {
     Name = var.vpc_definition.internet_gateway_name
+    created-by = var.author
   }
 }
 
@@ -30,6 +36,7 @@ resource "aws_route_table" "public" {
   
   tags = {
     Name = "${var.vpc_definition.internet_gateway_name}-pubrt"
+    created-by = var.author
   }
 }
 
